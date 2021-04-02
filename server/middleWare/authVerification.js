@@ -1,4 +1,4 @@
- import UserController from"../controller/authcontroller";
+ import UserController from"../controller/Authcontroller";
  import userData  from"../model/Usermodel";
  import {dataFromToken} from "../Helpers/token";
 export const verifyAuth=(req,res,next)=>{
