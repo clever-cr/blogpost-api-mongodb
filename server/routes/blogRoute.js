@@ -1,6 +1,6 @@
 import express from'express';
 import {verifyAuth }from'../middleWare/authVerification';
-import Validator from'../middleware/validator';
+import Validator from'../middleWare/validator';
 import blogController from '../controller/blogController';
 
 const blogrouter=express. Router();
