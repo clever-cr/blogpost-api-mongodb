@@ -1,127 +1,108 @@
+
 import blogData from '../model/blogmodel';
-const Articles = [];
-class blogController{
-    static getAllBlog=(req,res)=>{
-        const data=Articles;
+
+class blogController {
+
+    static getAllBlog = async (req, res) => {
+        const data = await blogData.find();
+        
         return res.status(200).json({
-status:200,
-message:"these are  blogs",
-data
+            status: 200,
+            message: "these are  blogs",
+            data:data
         })
     }
-    static createBlog =(req,res)=>{
-        const blogId=Articles.length + 1;
-        let{
-            title,
-            content,
-            userid
-        }=req.body
-        const timestamp=new Date(Date.now());
-        const Article = new blogData( blogId,title,content,timestamp,userid );
-        Articles.push(Article);
-
-    const data=Articles.find(( Article) =>  Article.blogId===blogId);
-    if(!data){
-        return res.status(417).json({
-            status:417,
-            message:"blog not created"
-        })
-    }
-    return res.status(201).json({
-        status:201,
-        message:"blog created successfully",
-      data
-    })
-}
-static getOne=(req,res)=>{
-    const blogId=req.params.blogId;//param?90+
-
-
-
-
-
+    static createBlog = async (req, res) => {
+    let{
     
-    const data=Articles.find(Article=> Article.blogId==blogId);
-    if(!data){
-        return res. status(401).json({
-            status:401,
-            message:"doesn't exist"
-        })
-    }
-    return res.status(200).json({
-status:200,
-message:"ok successfully",
-data
-    })
-
-
-}
-static delete=(req,res)=>{
-    const blogId=req.params.blogId;
-    const data= Articles.findIndex(Article=>Article.blogId==blogId);
-if(data===-1){
-    return res.status(404).json({
-        staus:404,
-        message:"not exist"
-    })
-  
-}
-    const remove=Articles.splice(data,1);
-   
-   return res.status(201).json({
-       status:201,
-       message:"deleted successfully",
-      data
-
-   })
-    
-}
-static updateOne=(req,res)=>{
-    const blogId=req.params.blogId;
-    const dataIndex= Articles.findIndex(Article=>Article.blogId==blogId);
-if(dataIndex===-1){
-    return res.status(404).json({
-        staus:404,
-        message:"not exist"
-    })
-  
-}
-
-
-let{
     title,
     content,
     userid
-}=req.body
-const timestamp=new Date(Date.now());
-const Article = new blogData( blogId,title,content,timestamp,userid );
-
-
-//Articles.splice(dataIndex,1);
-
-Articles[dataIndex]=Article;
-
-const data=Articles.find(Article=> Article.blogId==blogId);
-
-if(!data){
-    return res.status(417).json({
-        satus:417,
-        message:"not updated"
-    })
-}
-
-   
-   return res.status(201).json({
-       status:201,
-       message:"updated successfully",
-      data
-
-   })
+    }=req.body
+        const data = await blogData.create(req.body);
+        if (!data) {
+            return res.status(417).json({
+                status: 417,
+                message: "blog not created"
+            })
+        }
+        return res.status(201).json({
+            status: 201,
+            message: "blog created successfully",
+            data: data._doc
+        })
     }
+    static getOne = async (req, res) => {
+    const blogId = req.params.blogId
+        const data = await blogData.findById(blogId);
+      
+        if (!data) {
+            return res.status(401).json({
+                status: 401,
+                message: "doesn't exist"
+            })
+        }
+        console.log("cdgch",data)
+        return res.status(200).json({
+            status: 200,
+            message: "ok successfully",
+            data
+        })
+
+
+    }
+    static delete= async (req,res)=> {
+        const blogId = req.params.blogId;
+        const data = await blogData.findByIdAndDelete(blogId);
+        if (!data){
+            return res.status(404).json({
+                status:417,
+                messsage:"blog failed to be deleted"
+            });
+        
+
+            
+        }
+        return res.status(200).json({
+            status:200,
+            message:"deleted successfully",
+            data
+        })
+    }
+     static updateOne= async (req,res)=>{
+        const blogId=req.params.blogId;
+ 
+
+     let{
+        title,
+         content
+    }=req.body
+   
+    const data= await blogData.findByIdAndUpdate(blogId,{
+        title:title,
+        content:content
+    });
+
+
+    if(!data){
+        return res.status(417).json({
+            status:417,
+            message:"not updated"
+        })
+    }
+
+const dataUpdated = await blogData.findById(blogId)
+       return res.status(201).json({
+           status:201,
+           message:"updated successfully",
+          data:dataUpdated
+
+       })
+        }
 }
-   
-   
-    
+
+
+
 
 
 

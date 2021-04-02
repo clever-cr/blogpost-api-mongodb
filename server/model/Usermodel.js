@@ -1,16 +1,32 @@
-class UserData{
-    constructor (id,firstname,lastname,email,password,gender,role,department,adress){
-        this.id=id,
-        this.firstname=firstname,
-        this.lastname=lastname,
-        this.email=email,
-        this.password=password,
-        this.gender=gender,
-        this.role=role,
-        this.department=department,
-        this.adress=adress
+
+import mongoose from "mongoose";
+const userSchema = new mongoose.Schema({
+    firstname: String,
+    lastname: String,
+    email: {
+        type: String,
+        required: [true, "email is required"]
+    },
+    password: {
+        type: String,
+        required: [true, "email is required"]
+    },
+    gender: {
+        type: String,
+        enum: ["male", "female"]
+    },
+
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        required: [true, "role is required"],
+        default: "user"
+    },
+    department: String,
+    adress: {
+        type: String,
+        default: "Rwanda"
     }
-
-}
-
-export default UserData;
+});
+const userInfo=mongoose.model("user",userSchema);
+export default userInfo;

@@ -1,10 +1,29 @@
-class blogData{
-    constructor(blogId,title,content,timestamp,userid){
-        this.blogId=blogId,
-        this.title=title,
-        this.content=content,
-    this.timestamp=timestamp,
-        this.userid=userid
+
+import mongoose from "mongoose";
+const blogSchema=new mongoose.Schema({
+    title:{
+        type:String,
+        required:[true,"title required"]
+    },
+content:{
+    type:String,
+    required:[true,"content required"]
+},
+    userid:{
+        type: mongoose.Schema.ObjectId,
+        ref:"user",
+        required:[true,"user is required"]
+    },
+    timestamp:{type:String,default:new Date(Date.now()  )
     }
-}
-export default blogData;
+
+});
+blogSchema.pre(/^find/,function(next){
+    this.populate({
+        path:"userid",
+        select:"firstname email"
+    })
+    next();
+});
+const blogInfo=mongoose.model("blog",blogSchema);
+export default blogInfo;

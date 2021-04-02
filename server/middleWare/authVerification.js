@@ -1,4 +1,5 @@
- import UserController from"../controller/Authcontroller";
+ import UserController from"../controller/authcontroller";
+ import userData  from"../model/Usermodel";
  import {dataFromToken} from "../Helpers/token";
 export const verifyAuth=(req,res,next)=>{
      const token=req.header("x-auth-token");
@@ -15,8 +16,8 @@ try{
     const user=dataFromToken(token).payload;
 
    // console.log(">>>>>>>>>>>>>>>>>>>",user)
-    const Users=UserController.Users;
-    const data=Users.find(u=>u.email== user.email);
+  
+    const data=userData.findOne({email:user.email});
     
     if(!data){
         return res.status(404).json({
@@ -25,12 +26,12 @@ try{
         })
 
     }
-    
-    req.body.userid=data.id;//userid from blogmodel and id from user model
+    console.log(user);
+    req.body.userid=user.id;//userid from blogmodel and id from user model
     return next();
     
 }catch(e){
-
+console.log(e);
     return res.status(404).json({
         status:404,
         message:"invalid token"
