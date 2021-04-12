@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     adress: {
         type: String,
         default: "Rwanda"
+    },
+    passwordChangedTime:{
+        type:String,
+        default:Date.now()
     }
 });
 const userInfo=mongoose.model("user",userSchema);
