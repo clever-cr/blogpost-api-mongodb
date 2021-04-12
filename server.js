@@ -5,12 +5,14 @@ import bodyParse from "body-parser";
 import dotenv from "dotenv";
 import router from './server/routes/Authroute';
 import blogrouter from './server/routes/blogRoute';
+import commentRoute from './server/routes/commentRoute';
 
 dotenv.config({ path: "./.env" });
 const app = express();
 app.use(bodyParse.json());
 app.use('/api/v1/blogpost', router);
 app.use('/api/v1/blogpost', blogrouter);
+app.use('/api/v1/blogpost/comment',commentRoute);
 
 
 

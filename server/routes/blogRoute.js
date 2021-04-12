@@ -10,4 +10,5 @@ blogrouter.get('/get',verifyAuth,blogController.getAllBlog);
  blogrouter.get('/blog/get/:blogId',verifyAuth,Validator.verifyAccess,blogController.getOne);
  blogrouter.delete('/blog/get/:blogId',verifyAuth,Validator.verifyAccess,blogController.delete);
  blogrouter.patch('/blog/get/:blogId',verifyAuth,Validator.verifyAccess,blogController.updateOne);
+ blogrouter.get('/getallfromapi',blogController.getAllBlogsFromApi)
  export default blogrouter;                                                                                                                                                                                                                                                                                      
