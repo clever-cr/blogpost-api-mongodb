@@ -1,8 +1,20 @@
 
 import blogData from '../model/blogmodel';
 import Response from '../Helpers/response';
+import axios from 'axios';
 
 class blogController {
+    static getAllBlogsFromApi = async (req,res) => {
+        try{
+            const responseFromAPI = await axios.get('http://blogpost-api-shecancode.herokuapp.com/api/v1/blog/dash/all')
+            return Response.successMessage(res,"fetched successfully",responseFromAPI.data,200)
+
+        }
+        catch(e){
+            console.log(e)
+            return errorMessage(res,"fetched failed",417)
+        }
+    }
 
     static getAllBlog = async (req, res) => {
         const data = await blogData.find();
